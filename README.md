@@ -1,6 +1,6 @@
-# {Company} {Api Name} OpenAPI Description
+# Doppler API OpenAPI Description
 
-This repository contains [OpenAPI description](/openapi.yml) for <{docs_url}>.
+This repository contains [OpenAPI description](/openapi.yml) for <https://docs.doppler.com/reference/api>.
 
 ## What is OpenAPI?
 
@@ -10,4 +10,4 @@ From the [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification):
 
 ## Issues
 
-Feel free to [leave an issue](https://github.com/fern-{company}/{company}-openapi/issues) on this repo.
+Feel free to [leave an issue](https://github.com/fern-doppler/doppler-openapi/issues) on this repo.
