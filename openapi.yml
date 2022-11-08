@@ -1,0 +1,288 @@
+openapi: 3.0.1
+info:
+  title: api
+  version: 0.0.5
+paths:
+  /logs/:
+    get:
+      operationId: ActivityLogsService.list
+      tags:
+        - ActivityLogsService
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: string
+        - name: per_page
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogActivityLogsList'
+      security: &ref_0
+        - BasicAuth: []
+  /logs/log:
+    get:
+      operationId: ActivityLogsService.retrieve
+      tags:
+        - ActivityLogsService
+      parameters:
+        - name: log
+          in: query
+          description: Unique identifier for the log object.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogActivityLog'
+      security: *ref_0
+  /auth/revoke:
+    post:
+      operationId: AuthService.revoke
+      tags:
+        - AuthService
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRevokeRequest'
+  /projects/:
+    post:
+      operationId: ProjectsService.create
+      tags:
+        - ProjectsService
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectsProject'
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectsCreateProjectRequest'
+  /projects/project:
+    delete:
+      operationId: ProjectsService.delete
+      tags:
+        - ProjectsService
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectsDeleteProjectRequest'
+  /workplace/:
+    post:
+      operationId: WorkplaceService.update
+      tags:
+        - WorkplaceService
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkplaceWorkplace'
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkplaceUpdateWorkplace'
+components:
+  schemas:
+    ActivityLogActivityLog:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+        text:
+          type: string
+          description: Text describing the event.
+        html:
+          type: string
+          description: HTML describing the event.
+        user:
+          $ref: '#/components/schemas/ActivityLogUser'
+        project:
+          type: string
+          description: Unique identifier for the project object.
+        environment:
+          type: string
+          description: Unique identifier for the environment object.
+        config:
+          type: string
+          description: The config's name.
+        created_at:
+          type: string
+          format: date-time
+          description: Date and time of the object's creation.
+      required:
+        - id
+        - text
+        - html
+        - user
+        - project
+        - environment
+        - config
+        - created_at
+    ActivityLogActivityLogsList:
+      type: object
+      properties:
+        page:
+          type: integer
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityLogActivityLog'
+      required:
+        - page
+        - logs
+    ActivityLogUser:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        profile_image_url:
+          type: string
+      required:
+        - email
+        - name
+        - profile_image_url
+    AuthRevokeRequest:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+        - token
+    ProjectsProject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the object.
+        name:
+          type: string
+          description: Name of the project.
+        description:
+          type: string
+          description: Description of the project.
+        created_at:
+          type: string
+          format: date-time
+          description: Date and time of the object's creation.
+      required:
+        - id
+        - name
+        - description
+        - created_at
+    ProjectsProjectList:
+      type: object
+      properties:
+        page:
+          type: integer
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectsProject'
+      required:
+        - page
+        - projects
+    ProjectsCreateProjectRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of project
+        description:
+          type: string
+          description: Description of project
+      required:
+        - name
+    ProjectsUpdateProjectRequest:
+      type: object
+      properties:
+        project:
+          type: string
+          description: Unique identifier for the project object.
+        name:
+          type: string
+          description: Name of the project.
+        description:
+          type: string
+          description: Description of the project.
+      required:
+        - project
+        - name
+    ProjectsDeleteProjectRequest:
+      type: object
+      properties:
+        project:
+          type: string
+          description: Unique identifier for the project object.
+      required:
+        - project
+    WorkplaceWorkplace:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the workplace.
+        billing_email:
+          type: string
+          description: Billing email we will send invoices to.
+      required:
+        - name
+        - billing_email
+    WorkplaceUpdateWorkplace:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the workplace.
+        billing_email:
+          type: string
+          description: Billing email we will send invoices to.
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+servers:
+  - url: https://api.doppler.com/v3
